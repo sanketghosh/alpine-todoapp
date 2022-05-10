@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <title>Todo app</title>
+  </head>
+  <body class="bg-veryDarkBlue">
+    <div class="py-2 my-20">
+      <p
+        class="items-center text-center text-2xl text-amber-500 font-bold pb-2"
+      >
+        Add Your Todo
+      </p>
+      <div
+        class="flex flex-col justify-center items-center"
+        x-data="{todos:[], userInput:''}"
+      >
+        <form class="my-2 p-4" x-on:submit.prevent>
+          <input
+            class="px-7 py-4 rounded-md outline"
+            x-model="userInput"
+            type="text"
+            placeholder="Enter todo items"
+          />
+          <button
+            class="mx-3 px-7 py-4 rounded-md text-veryDarkBlue font-semibold bg-amber-600 hover:bg-amber-500 transition-all hover:scale-95 cursor-pointer"
+            x-on:click="if(userInput.trim().length>0) todos.push({name:userInput, completed:false});userInput=''"
+          >
+            Add
+          </button>
+        </form>
+        <div
+          class="px-7 mx-6 flex flex-col items-center justify-center text-center text-veryLightGray"
+        >
+          <template x-for="todo in todos">
+            <div
+              class="grid grid-cols-4 items-center content-center list-none text-center space-x-3 space-y-3 mx-6 justify-center"
+            >
+              <input
+                class="flex flex-col col-span-1 h-9 w-8"
+                type="checkbox"
+                x-model="todo.completed"
+              />
+              <div class="col-span-2 h-12 w-64">
+                <span
+                  class="flex items-center justify-between"
+                  x-text="todo.name"
+                  x-bind:class="{'line-through':todo.completed}"
+                ></span>
+              </div>
+
+              <div class="col-span-1 flex flex-col pr-24">
+                <button
+                  class="px-5 py-2 text-sm font-semibold rounded-md col-span-1 bg-amber-600 max-w-fit flex items-center space-x-2 cursor-pointer hover:bg-red-500 transition-all hover:scale-95"
+                  @click="todos=todos.filter((currTodo)=>currTodo!=todo)"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </template>
+          <button
+            class="px-4 py-2 mt-24 text-sm font-semibold rounded-md bg-green-600 text-center cursor-pointer hover:bg-red-500 transition-all hover:scale-95"
+            @click="todos=[]"
+            x-show="todos.length>0"
+          >
+            Clear All
+          </button>
+          <div class="mt-10 text-amber-600 text-2xl font-semibold">
+            <span x-text="todos.filter((todo)=>todo.completed).length"></span> /
+            <span x-text="todos.length"></span> todos completed
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
